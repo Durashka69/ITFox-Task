@@ -30,7 +30,7 @@ class LikeViewSet(viewsets.ModelViewSet):
             news=request.data.get('news')
         ):
             return Response(
-                {'error': f'Like from {request.user.username} already exists!'},
+                {'message': f'Like from {request.user.username} already exists!'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         return super().create(request, *args, **kwargs)
