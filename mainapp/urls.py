@@ -1,4 +1,4 @@
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 
 from mainapp.views import (
     UserViewSet,
@@ -8,7 +8,7 @@ from mainapp.views import (
 )
 
 
-router = DefaultRouter()
+router = SimpleRouter()
 
 router.register('users', UserViewSet, basename='users')
 router.register('likes', LikeViewSet, basename='likes')

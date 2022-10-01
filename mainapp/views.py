@@ -1,6 +1,6 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.parsers import MultiPartParser, FormParser
 
 from mainapp.models import User, Like, Comment, News
 
@@ -24,6 +24,17 @@ class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrAdminOrReadOnly,)
 
+    def create(self, request, *args, **kwargs):
+        if Like.objects.filter(
+            user=self.request.user,
+            news=request.data.get('news')
+        ):
+            return Response(
+                {'error': f'Like from {request.user.username} already exists!'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return super().create(request, *args, **kwargs)
+
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
 
@@ -38,7 +49,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class NewsViewSet(viewsets.ModelViewSet):
-    parser_classes = [MultiPartParser, FormParser]
     queryset = News.objects.all()
     serializer_class = NewsSerializer
     permission_classes = (IsAuthenticated, IsOwnerOrAdminOrReadOnly)

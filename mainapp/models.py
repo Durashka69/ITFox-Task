@@ -18,10 +18,6 @@ class News(models.Model):
     content = models.TextField(
         verbose_name='Содержание'
     )
-    image = models.ImageField(
-        upload_to='images/news',
-        null=True, blank=True
-    )
     date = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата'

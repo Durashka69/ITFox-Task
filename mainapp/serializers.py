@@ -35,6 +35,9 @@ class LikeSerializer(serializers.ModelSerializer):
             "news": {"write_only": True}
         }
 
+    def save(self, **kwargs):
+        return super().save(**kwargs)
+
 
 class NewsLikeSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
@@ -100,7 +103,6 @@ class NewsSerializer(serializers.ModelSerializer):
             "username",
             "title",
             "content",
-            "image",
             "date",
             "total_likes",
             "likes",
